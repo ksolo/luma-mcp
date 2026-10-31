@@ -3,9 +3,14 @@
 An MCP server for integrating agents with the [Luma API](https://docs.luma.com/reference/getting-started-with-your-api)
 to manage meetup events and guests.
 
-The Events API is implemented, including guests, hosts, ticket types, coupons,
-blasts, and two-step event cancellation. Calendars, memberships, webhooks,
-organizations, and miscellaneous operations will follow in separate PRs.
+The Events and Calendars APIs are implemented, including guests, hosts, tickets,
+blasts, calendar settings, event submissions, contacts, admins, tags, and coupons.
+Memberships, webhooks, organizations, and miscellaneous operations will follow
+in separate PRs.
+
+Calendar coupon tools are named `create_calendar_coupon` and `update_calendar_coupon`
+to distinguish them from the event coupon tools. `list_events` lists events on the
+caller's calendar, with filters for managed, listed, and external events.
 
 ## Luma prerequisites
 
@@ -75,10 +80,13 @@ Use `just format` to format Python code and `just hooks` to run pre-commit again
 tracked files. GitHub Actions checks lint, formatting, and tests on pushes and pull requests.
 Run `just` to list all available commands.
 
-Tests use synthetic examples in `tests/fixtures/events.json`, validated against
+Tests use synthetic examples in `tests/fixtures/`, validated against
 Luma's [public OpenAPI specification](https://public-api.luma.com/openapi.json).
-The checked-in Events snapshot is `schemas/events.json`; regenerate Pydantic models
-with `just generate-models`. Tests never contact Luma or require a real API key.
+The checked-in snapshots are `schemas/events.json` and `schemas/calendars.json`;
+regenerate Pydantic models with `just generate-models events` or
+`just generate-models calendars`. Calendar fixtures cover repeated query parameters,
+mixed event types, pagination, and partial updates. Tests never contact Luma or
+require a real API key.
 
 ## Project layout
 

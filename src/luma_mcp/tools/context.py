@@ -9,6 +9,8 @@ from mcp.server.mcpserver.exceptions import ToolError
 from opentelemetry import trace
 from pydantic import SecretStr
 
+from luma_mcp.client.base import LumaClient
+from luma_mcp.client.calendars import CalendarsClient
 from luma_mcp.client.errors import LumaError
 from luma_mcp.client.events import EventsClient
 
@@ -22,13 +24,21 @@ def api_key(ctx: Context) -> SecretStr:
     return SecretStr(key)
 
 
+def event_client(ctx: Context):
+    return luma_client(ctx, EventsClient)
+
+
+def calendar_client(ctx: Context):
+    return luma_client(ctx, CalendarsClient)
+
+
 @asynccontextmanager
-async def event_client(ctx: Context):
+async def luma_client[T: LumaClient](ctx: Context, client_type: type[T]):
     key = api_key(ctx)
     try:
         with tracer.start_as_current_span("mcp.tool", record_exception=False):
             async with http_client() as http:
-                yield EventsClient(key, http)
+                yield client_type(key, http)
     except LumaError as error:
         raise ToolError(json.dumps(error.details)) from None
 
