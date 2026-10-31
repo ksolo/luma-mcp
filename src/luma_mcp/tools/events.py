@@ -254,7 +254,7 @@ OPERATIONS = [
 ]
 
 
-def register(server: MCPServer) -> None:
+def register_events(server: MCPServer) -> None:
     for operation, read_only in OPERATIONS:
         server.tool(
             # MCP output schemas must be objects; get_event returns a top-level union.
