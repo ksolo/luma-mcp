@@ -31,3 +31,13 @@ MEMBERSHIP_CASES = json.loads(
 @pytest.fixture(params=MEMBERSHIP_CASES, ids=lambda case: case["scenario"])
 def membership_case(request):
     return request.param
+
+
+WEBHOOK_CASES = json.loads(
+    (Path(__file__).parent / "fixtures/webhooks.json").read_text()
+)
+
+
+@pytest.fixture(params=WEBHOOK_CASES, ids=lambda case: case["scenario"])
+def webhook_case(request):
+    return request.param

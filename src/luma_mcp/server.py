@@ -10,11 +10,13 @@ from luma_mcp.telemetry import configure, redact_request_url
 from luma_mcp.tools.calendars import register_calendars
 from luma_mcp.tools.events import register_events
 from luma_mcp.tools.memberships import register_memberships
+from luma_mcp.tools.webhooks import register_webhooks
 
 mcp = MCPServer("Luma")
 register_events(mcp)
 register_calendars(mcp)
 register_memberships(mcp)
+register_webhooks(mcp)
 
 
 def create_app():
