@@ -1,0 +1,860 @@
+[
+  {
+    "scenario": "get_calendar",
+    "operation": "get_calendar",
+    "model": "GetCalendar",
+    "method": "GET",
+    "path": "/v1/calendars/get",
+    "request": {},
+    "response": {
+      "id": "cal-meetup",
+      "launch_status": "launched",
+      "tint_color": "#336699",
+      "name": "Agent Meetup",
+      "slug": "agent-meetup",
+      "avatar_url": "https://images.lumacdn.com/calendar.png",
+      "url": "https://luma.com/agent-meetup",
+      "description": "A community for building agents.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": {
+        "city": "Indianapolis",
+        "region": "Indiana",
+        "country": "United States",
+        "country_code": "US",
+        "timezone": "America/Indiana/Indianapolis"
+      },
+      "coordinate": {
+        "latitude": 39.7684,
+        "longitude": -86.1581
+      },
+      "instagram_handle": null,
+      "twitter_handle": "agentmeetup",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": "https://example.test/meetup",
+      "event_defaults": {
+        "visibility": "public",
+        "show_guest_list": true,
+        "feedback_email": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  {
+    "scenario": "list_events",
+    "operation": "list_events",
+    "model": "ListEvents",
+    "method": "GET",
+    "path": "/v1/calendars/events/list",
+    "request": {
+      "before": "2026-12-01T00:00:00Z",
+      "after": "2026-11-01T00:00:00Z",
+      "platforms": [
+        "luma",
+        "external"
+      ],
+      "access": [
+        "manage",
+        "view"
+      ],
+      "pagination_limit": 25,
+      "pagination_cursor": "events-page-1",
+      "status": "approved",
+      "sort_column": "start_at",
+      "sort_direction": "asc"
+    },
+    "response": {
+      "entries": [
+        {
+          "platform": "luma",
+          "id": "evt-meetup",
+          "user_id": "usr-alex",
+          "calendar_id": "cal-meetup",
+          "start_at": "2026-11-12T00:00:00Z",
+          "duration_interval": "PT2H",
+          "end_at": "2026-11-12T02:00:00Z",
+          "created_at": "2026-11-01T18:00:00Z",
+          "timezone": "America/Chicago",
+          "name": "Agent Meetup",
+          "geo_address_json": null,
+          "coordinate": null,
+          "meeting_url": "https://meet.google.com/synthetic-meetup",
+          "location_type": "meet",
+          "location_visibility": "public",
+          "cover_url": "https://images.lumacdn.com/example.png",
+          "url": "https://luma.com/example-meetup",
+          "visibility": "public",
+          "waitlist_status": "disabled",
+          "registration_open": true,
+          "require_approval": false,
+          "max_capacity": null,
+          "can_register_for_multiple_tickets": true,
+          "spots_remaining": null,
+          "display_price": null,
+          "feedback_email": {
+            "enabled": true
+          },
+          "access": "manage",
+          "tags": [
+            {
+              "id": "tag-workshop",
+              "name": "workshop"
+            }
+          ],
+          "submitted_by": {
+            "id": "usr-alex",
+            "name": "Alex Example",
+            "avatar_url": "https://example.test/alex.png",
+            "email": "alex@example.test",
+            "first_name": "Alex",
+            "last_name": "Example"
+          }
+        },
+        {
+          "platform": "luma",
+          "id": "evt-neighbor",
+          "user_id": "usr-alex",
+          "calendar_id": "cal-neighbor",
+          "start_at": "2026-11-12T00:00:00Z",
+          "duration_interval": "PT2H",
+          "end_at": "2026-11-12T02:00:00Z",
+          "created_at": "2026-11-01T18:00:00Z",
+          "timezone": "America/Chicago",
+          "name": "Agent Meetup",
+          "geo_address_json": null,
+          "coordinate": null,
+          "location_type": "meet",
+          "location_visibility": "guests-only",
+          "cover_url": "https://images.lumacdn.com/example.png",
+          "url": "https://luma.com/example-meetup",
+          "visibility": "public",
+          "waitlist_status": "disabled",
+          "registration_open": true,
+          "require_approval": false,
+          "spots_remaining": null,
+          "display_price": null,
+          "access": "view",
+          "tags": [],
+          "submitted_by": null
+        },
+        {
+          "platform": "external",
+          "id": "calev-external",
+          "calendar_id": "cal-meetup",
+          "start_at": "2026-11-13T00:00:00Z",
+          "end_at": "2026-11-13T02:00:00Z",
+          "duration_interval": "PT2H",
+          "created_at": "2026-11-01T18:00:00Z",
+          "timezone": "America/Chicago",
+          "name": "Community Talk",
+          "geo_address_json": null,
+          "coordinate": null,
+          "url": "https://example.test/community-talk",
+          "host": "Community Organizers",
+          "tags": [],
+          "submitted_by": {
+            "id": "usr-alex",
+            "name": "Alex Example",
+            "avatar_url": "https://example.test/alex.png",
+            "email": "alex@example.test",
+            "first_name": "Alex",
+            "last_name": "Example"
+          }
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "events-page-2"
+    }
+  },
+  {
+    "scenario": "list_contact_tags",
+    "operation": "list_contact_tags",
+    "model": "ListContactTags",
+    "method": "GET",
+    "path": "/v1/calendars/contact-tags/list",
+    "request": {},
+    "response": {
+      "entries": [
+        {
+          "id": "tag-attendee",
+          "name": "attendee",
+          "color": "blue"
+        }
+      ],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "list_event_tags",
+    "operation": "list_event_tags",
+    "model": "ListEventTags",
+    "method": "GET",
+    "path": "/v1/calendars/event-tags/list",
+    "request": {},
+    "response": {
+      "entries": [
+        {
+          "id": "tag-workshop",
+          "name": "workshop",
+          "color": "purple"
+        }
+      ],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "list_calendar_admins",
+    "operation": "list_calendar_admins",
+    "model": "ListCalendarAdmins",
+    "method": "GET",
+    "path": "/v1/calendars/admins/list",
+    "request": {},
+    "response": {
+      "entries": [
+        {
+          "id": "usr-alex",
+          "name": "Alex Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "alex@example.test",
+          "first_name": "Alex",
+          "last_name": "Example"
+        }
+      ],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "lookup_event",
+    "operation": "lookup_event",
+    "model": "LookupEvent",
+    "method": "GET",
+    "path": "/v1/calendars/events/lookup",
+    "request": {
+      "platform": "luma",
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "event": {
+        "id": "calev-meetup",
+        "status": "approved",
+        "submitted_by": {
+          "id": "usr-alex",
+          "name": "Alex Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "alex@example.test",
+          "first_name": "Alex",
+          "last_name": "Example"
+        }
+      }
+    }
+  },
+  {
+    "scenario": "list_contacts",
+    "operation": "list_contacts",
+    "model": "ListContacts",
+    "method": "GET",
+    "path": "/v1/calendars/contacts/list",
+    "request": {
+      "query": "Alex",
+      "tags": [
+        "attendee",
+        "tag-sponsor"
+      ],
+      "calendar_membership_tier_id": "tier-supporter",
+      "membership_status": "approved",
+      "pagination_limit": 25,
+      "pagination_cursor": "contacts-page-1",
+      "sort_column": "created_at",
+      "sort_direction": "desc"
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "usr-alex",
+          "user_id": "usr-alex",
+          "created_at": "2026-11-01T18:00:00Z",
+          "event_approved_count": 3,
+          "event_checked_in_count": 2,
+          "revenue_usd_cents": 2500,
+          "tags": [
+            {
+              "id": "tag-attendee",
+              "name": "attendee"
+            }
+          ],
+          "membership": {
+            "status": "approved",
+            "calendar_membership_tier_id": "tier-supporter",
+            "registration_answers": [
+              {
+                "label": "How did you hear about us?",
+                "question_id": "question-source",
+                "value": "Meetup",
+                "question_type": "text"
+              }
+            ]
+          },
+          "name": "Alex Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "alex@example.test",
+          "first_name": "Alex",
+          "last_name": "Example"
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "contacts-page-2"
+    }
+  },
+  {
+    "scenario": "list_calendar_coupons",
+    "operation": "list_calendar_coupons",
+    "model": "ListCalendarCoupons",
+    "method": "GET",
+    "path": "/v1/calendars/coupons/list",
+    "request": {
+      "pagination_limit": 25,
+      "pagination_cursor": "coupons-page-1"
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "coupon-calendar",
+          "code": "COMMUNITY20",
+          "remaining_count": 10,
+          "valid_start_at": null,
+          "valid_end_at": null,
+          "percent_off": 20,
+          "cents_off": null,
+          "currency": null,
+          "event_ticket_type_id": null
+        }
+      ],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "create_calendar_coupon",
+    "operation": "create_calendar_coupon",
+    "model": "CreateCalendarCoupon",
+    "method": "POST",
+    "path": "/v1/calendars/coupons/create",
+    "request": {
+      "code": "COMMUNITY20",
+      "remaining_count": 10,
+      "discount": {
+        "discount_type": "percent",
+        "percent_off": 20
+      }
+    },
+    "response": {
+      "id": "coupon-calendar",
+      "code": "COMMUNITY20",
+      "remaining_count": 10,
+      "valid_start_at": null,
+      "valid_end_at": null,
+      "percent_off": 20,
+      "cents_off": null,
+      "currency": null,
+      "event_ticket_type_id": null
+    }
+  },
+  {
+    "scenario": "update_calendar_coupon",
+    "operation": "update_calendar_coupon",
+    "model": "UpdateCalendarCoupon",
+    "method": "POST",
+    "path": "/v1/calendars/coupons/update",
+    "request": {
+      "code": "COMMUNITY20",
+      "remaining_count": 0,
+      "valid_end_at": null
+    },
+    "response": {}
+  },
+  {
+    "scenario": "import_contacts",
+    "operation": "import_contacts",
+    "model": "ImportContacts",
+    "method": "POST",
+    "path": "/v1/calendars/contacts/import",
+    "request": {
+      "contacts": [
+        {
+          "email": "alex@example.test",
+          "name": "Alex Example"
+        },
+        {
+          "email": "sam@example.test",
+          "name": null
+        }
+      ],
+      "tags": [
+        "attendee",
+        "tag-sponsor"
+      ]
+    },
+    "response": {}
+  },
+  {
+    "scenario": "block_contact",
+    "operation": "block_contact",
+    "model": "BlockContact",
+    "method": "POST",
+    "path": "/v1/calendars/contacts/block",
+    "request": {
+      "email": "blocked@example.test"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "remove_contact",
+    "operation": "remove_contact",
+    "model": "RemoveContact",
+    "method": "POST",
+    "path": "/v1/calendars/contacts/remove",
+    "request": {
+      "contact_id": "usr-removed"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "restore_contact",
+    "operation": "restore_contact",
+    "model": "RestoreContact",
+    "method": "POST",
+    "path": "/v1/calendars/contacts/restore",
+    "request": {
+      "email": "restored@example.test"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "create_contact_tag",
+    "operation": "create_contact_tag",
+    "model": "CreateContactTag",
+    "method": "POST",
+    "path": "/v1/calendars/contact-tags/create",
+    "request": {
+      "name": "attendee",
+      "color": "blue"
+    },
+    "response": {
+      "id": "tag-attendee"
+    }
+  },
+  {
+    "scenario": "update_contact_tag",
+    "operation": "update_contact_tag",
+    "model": "UpdateContactTag",
+    "method": "POST",
+    "path": "/v1/calendars/contact-tags/update",
+    "request": {
+      "tag_id": "tag-attendee",
+      "name": "regular",
+      "color": "green"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "delete_contact_tag",
+    "operation": "delete_contact_tag",
+    "model": "DeleteContactTag",
+    "method": "POST",
+    "path": "/v1/calendars/contact-tags/delete",
+    "request": {
+      "tag_id": "tag-attendee"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "apply_contact_tag",
+    "operation": "apply_contact_tag",
+    "model": "ApplyContactTag",
+    "method": "POST",
+    "path": "/v1/calendars/contact-tags/apply",
+    "request": {
+      "tag": "attendee",
+      "user_ids": [
+        "usr-alex",
+        "usr-not-a-contact"
+      ]
+    },
+    "response": {
+      "applied_count": 1,
+      "skipped_count": 1
+    }
+  },
+  {
+    "scenario": "unapply_contact_tag",
+    "operation": "unapply_contact_tag",
+    "model": "UnapplyContactTag",
+    "method": "POST",
+    "path": "/v1/calendars/contact-tags/unapply",
+    "request": {
+      "tag": "tag-attendee",
+      "emails": [
+        "alex@example.test",
+        "not-a-contact@example.test"
+      ]
+    },
+    "response": {
+      "removed_count": 1,
+      "skipped_count": 1
+    }
+  },
+  {
+    "scenario": "create_event_tag",
+    "operation": "create_event_tag",
+    "model": "CreateEventTag",
+    "method": "POST",
+    "path": "/v1/calendars/event-tags/create",
+    "request": {
+      "name": "workshop",
+      "color": "purple"
+    },
+    "response": {
+      "id": "tag-workshop"
+    }
+  },
+  {
+    "scenario": "update_event_tag",
+    "operation": "update_event_tag",
+    "model": "UpdateEventTag",
+    "method": "POST",
+    "path": "/v1/calendars/event-tags/update",
+    "request": {
+      "tag_id": "tag-workshop",
+      "name": "hands-on",
+      "color": "orange"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "delete_event_tag",
+    "operation": "delete_event_tag",
+    "model": "DeleteEventTag",
+    "method": "POST",
+    "path": "/v1/calendars/event-tags/delete",
+    "request": {
+      "tag_id": "tag-workshop"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "apply_event_tag",
+    "operation": "apply_event_tag",
+    "model": "ApplyEventTag",
+    "method": "POST",
+    "path": "/v1/calendars/event-tags/apply",
+    "request": {
+      "tag": "workshop",
+      "event_ids": [
+        "evt-meetup",
+        "evt-not-on-calendar"
+      ]
+    },
+    "response": {
+      "applied_count": 1,
+      "skipped_count": 1
+    }
+  },
+  {
+    "scenario": "unapply_event_tag",
+    "operation": "unapply_event_tag",
+    "model": "UnapplyEventTag",
+    "method": "POST",
+    "path": "/v1/calendars/event-tags/unapply",
+    "request": {
+      "tag": "tag-workshop",
+      "event_ids": [
+        "evt-meetup",
+        "evt-not-on-calendar"
+      ]
+    },
+    "response": {
+      "removed_count": 1,
+      "skipped_count": 1
+    }
+  },
+  {
+    "scenario": "add_event",
+    "operation": "add_event",
+    "model": "AddEvent",
+    "method": "POST",
+    "path": "/v1/calendars/events/add",
+    "request": {
+      "platform": "luma",
+      "event_id": "evt-meetup",
+      "submission_mode": "pending"
+    },
+    "response": {
+      "id": "calev-pending",
+      "status": "pending"
+    }
+  },
+  {
+    "scenario": "approve_event",
+    "operation": "approve_event",
+    "model": "ApproveEvent",
+    "method": "POST",
+    "path": "/v1/calendars/events/approve",
+    "request": {
+      "calendar_event_id": "calev-pending"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "reject_event",
+    "operation": "reject_event",
+    "model": "RejectEvent",
+    "method": "POST",
+    "path": "/v1/calendars/events/reject",
+    "request": {
+      "calendar_event_id": "calev-rejected",
+      "message": "This event is outside our community focus.",
+      "notify_submitter": true
+    },
+    "response": {}
+  },
+  {
+    "scenario": "add_calendar_admins",
+    "operation": "add_calendar_admins",
+    "model": "AddCalendarAdmins",
+    "method": "POST",
+    "path": "/v1/calendars/admins/add",
+    "request": {
+      "emails": [
+        "alex@example.test",
+        "sam@example.test"
+      ]
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "usr-alex",
+          "name": "Alex Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "alex@example.test",
+          "first_name": "Alex",
+          "last_name": "Example"
+        },
+        {
+          "id": "usr-sam",
+          "name": "Sam Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "sam@example.test",
+          "first_name": "Sam",
+          "last_name": "Example"
+        }
+      ]
+    }
+  },
+  {
+    "scenario": "update_calendar",
+    "operation": "update_calendar",
+    "model": "UpdateCalendar",
+    "method": "POST",
+    "path": "/v1/calendars/update",
+    "request": {
+      "calendar_id": "cal-meetup",
+      "website": null,
+      "twitter_handle": "",
+      "event_defaults": {
+        "show_guest_list": false,
+        "feedback_email": {
+          "enabled": false
+        }
+      }
+    },
+    "response": {
+      "id": "cal-meetup",
+      "launch_status": "launched",
+      "tint_color": "#336699",
+      "name": "Agent Meetup",
+      "slug": "agent-meetup",
+      "avatar_url": "https://images.lumacdn.com/calendar.png",
+      "url": "https://luma.com/agent-meetup",
+      "description": "A community for building agents.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": {
+        "city": "Indianapolis",
+        "region": "Indiana",
+        "country": "United States",
+        "country_code": "US",
+        "timezone": "America/Indiana/Indianapolis"
+      },
+      "coordinate": {
+        "latitude": 39.7684,
+        "longitude": -86.1581
+      },
+      "instagram_handle": null,
+      "twitter_handle": "",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": null,
+      "event_defaults": {
+        "visibility": "public",
+        "show_guest_list": false,
+        "feedback_email": {
+          "enabled": false
+        }
+      }
+    }
+  },
+  {
+    "scenario": "lookup_event_missing",
+    "operation": "lookup_event",
+    "model": "LookupEvent",
+    "method": "GET",
+    "path": "/v1/calendars/events/lookup",
+    "request": {
+      "platform": "luma",
+      "event_id": "evt-missing"
+    },
+    "response": {
+      "event": null
+    }
+  },
+  {
+    "scenario": "lookup_external_event",
+    "operation": "lookup_event",
+    "model": "LookupEvent",
+    "method": "GET",
+    "path": "/v1/calendars/events/lookup",
+    "request": {
+      "platform": "external",
+      "url": "https://example.test/community-talk"
+    },
+    "response": {
+      "event": {
+        "id": "calev-external",
+        "status": "approved",
+        "submitted_by": null
+      }
+    }
+  },
+  {
+    "scenario": "add_external_event",
+    "operation": "add_event",
+    "model": "AddEvent",
+    "method": "POST",
+    "path": "/v1/calendars/events/add",
+    "request": {
+      "platform": "external",
+      "url": "https://example.test/community-talk",
+      "name": "Community Talk",
+      "start_at": "2026-11-13T00:00:00Z",
+      "duration_interval": "PT2H",
+      "timezone": "America/Chicago",
+      "submission_mode": "auto",
+      "geo_address_json": null,
+      "host": "Community Organizers"
+    },
+    "response": {
+      "id": "calev-external",
+      "status": "approved"
+    }
+  },
+  {
+    "scenario": "list_events_final_page",
+    "operation": "list_events",
+    "model": "ListEvents",
+    "method": "GET",
+    "path": "/v1/calendars/events/list",
+    "request": {
+      "pagination_cursor": "events-page-2"
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "list_contacts_final_page",
+    "operation": "list_contacts",
+    "model": "ListContacts",
+    "method": "GET",
+    "path": "/v1/calendars/contacts/list",
+    "request": {
+      "pagination_cursor": "contacts-page-2",
+      "query": null,
+      "tags": null
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "clear_calendar_location",
+    "operation": "update_calendar",
+    "model": "UpdateCalendar",
+    "method": "POST",
+    "path": "/v1/calendars/update",
+    "request": {
+      "calendar_id": "cal-meetup",
+      "location": null
+    },
+    "response": {
+      "id": "cal-meetup",
+      "launch_status": "launched",
+      "tint_color": "#336699",
+      "name": "Agent Meetup",
+      "slug": "agent-meetup",
+      "avatar_url": "https://images.lumacdn.com/calendar.png",
+      "url": "https://luma.com/agent-meetup",
+      "description": "A community for building agents.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": null,
+      "coordinate": null,
+      "instagram_handle": null,
+      "twitter_handle": "agentmeetup",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": "https://example.test/meetup",
+      "event_defaults": {
+        "visibility": "public",
+        "show_guest_list": true,
+        "feedback_email": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  {
+    "scenario": "create_calendar_amount_coupon",
+    "operation": "create_calendar_coupon",
+    "model": "CreateCalendarCoupon",
+    "method": "POST",
+    "path": "/v1/calendars/coupons/create",
+    "request": {
+      "code": "FIVE-OFF",
+      "discount": {
+        "discount_type": "amount",
+        "cents_off": 500,
+        "currency": "usd"
+      }
+    },
+    "response": {
+      "id": "coupon-calendar",
+      "code": "FIVE-OFF",
+      "remaining_count": 10,
+      "valid_start_at": null,
+      "valid_end_at": null,
+      "percent_off": null,
+      "cents_off": 500,
+      "currency": "usd",
+      "event_ticket_type_id": null
+    }
+  }
+]

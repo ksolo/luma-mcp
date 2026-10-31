@@ -47,7 +47,8 @@ async def discover():
             )
             assert initialized["result"]["serverInfo"]["name"] == "Luma"
             tools = (await rpc(http, "tools/list"))["result"]["tools"]
-    assert len(tools) == 27
+    assert len(tools) == 56
+    assert len({tool["name"] for tool in tools}) == len(tools)
     assert all("api_key" not in json.dumps(tool["inputSchema"]) for tool in tools)
     cancel = next(tool for tool in tools if tool["name"] == "cancel_event")
     assert cancel["annotations"]["destructiveHint"] is True
