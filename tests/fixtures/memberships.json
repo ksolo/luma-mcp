@@ -1,0 +1,228 @@
+[
+  {
+    "scenario": "list_free_paid_recurring_and_hidden_tiers",
+    "operation": "list_membership_tiers",
+    "model": "ListMembershipTiers",
+    "method": "GET",
+    "path": "/v1/memberships/tiers/list",
+    "request": {
+      "pagination_cursor": "tiers-page-1",
+      "pagination_limit": 25
+    },
+    "response": {
+      "entries": [
+        {
+          "description": null,
+          "tint_color": "#336699",
+          "is_hidden": false,
+          "registration_questions": [],
+          "id": "tier-community",
+          "name": "Community",
+          "access_info": {
+            "type": "free",
+            "require_approval": false
+          }
+        },
+        {
+          "description": "One-time workshop membership.",
+          "tint_color": "#336699",
+          "is_hidden": false,
+          "registration_questions": [],
+          "id": "tier-workshop",
+          "name": "Workshop Access",
+          "access_info": {
+            "type": "payment-once",
+            "amount": 2500,
+            "currency": "usd",
+            "require_approval": true
+          }
+        },
+        {
+          "description": null,
+          "tint_color": "#336699",
+          "is_hidden": true,
+          "registration_questions": [
+            {
+              "id": "question-about",
+              "label": "Tell us about yourself",
+              "required": false,
+              "question_type": "text",
+              "multiline": true
+            },
+            {
+              "id": "question-interests",
+              "label": "Areas of interest",
+              "required": false,
+              "question_type": "select",
+              "multiple": true,
+              "options": [
+                "MCP",
+                "Evaluation",
+                "RAG"
+              ]
+            },
+            {
+              "id": "question-conduct",
+              "label": "Accept the code of conduct",
+              "required": true,
+              "question_type": "agree-check"
+            },
+            {
+              "id": "question-company",
+              "label": "Company",
+              "required": false,
+              "question_type": "company"
+            },
+            {
+              "id": "question-phone",
+              "label": "Phone",
+              "required": false,
+              "question_type": "phone-number"
+            }
+          ],
+          "id": "tier-supporter",
+          "name": "Supporter",
+          "access_info": {
+            "type": "payment-recurring",
+            "currency": "usd",
+            "stripe_account_id": "acct_synthetic",
+            "stripe_product_id": "prod_synthetic",
+            "stripe_monthly_price_id": "price_monthly_synthetic",
+            "amount_monthly": 1000,
+            "stripe_yearly_price_id": null,
+            "amount_yearly": null,
+            "require_approval": true
+          }
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "tiers-page-2"
+    }
+  },
+  {
+    "scenario": "list_final_page",
+    "operation": "list_membership_tiers",
+    "model": "ListMembershipTiers",
+    "method": "GET",
+    "path": "/v1/memberships/tiers/list",
+    "request": {
+      "pagination_cursor": "tiers-page-2"
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "add_free_member",
+    "operation": "add_member_to_tier",
+    "model": "AddMemberToTier",
+    "method": "POST",
+    "path": "/v1/memberships/members/add",
+    "request": {
+      "email": "alex@example.com",
+      "membership_tier_id": "tier-community"
+    },
+    "response": {
+      "membership_id": "mem-alex",
+      "status": "approved"
+    }
+  },
+  {
+    "scenario": "add_paid_member_with_external_payment_and_answers",
+    "operation": "add_member_to_tier",
+    "model": "AddMemberToTier",
+    "method": "POST",
+    "path": "/v1/memberships/members/add",
+    "request": {
+      "email": "sam@example.com",
+      "membership_tier_id": "tier-supporter",
+      "skip_payment": true,
+      "registration_answers": [
+        {
+          "label": "Tell us about yourself",
+          "question_id": "question-about",
+          "value": "I build agents.",
+          "question_type": "text",
+          "multiline": true
+        },
+        {
+          "label": "Areas of interest",
+          "question_id": "question-interests",
+          "value": [
+            "MCP",
+            "Evaluation"
+          ],
+          "question_type": "select",
+          "multiple": true
+        },
+        {
+          "label": "Accept the code of conduct",
+          "question_id": "question-conduct",
+          "value": true,
+          "question_type": "agree-check"
+        },
+        {
+          "label": "Company",
+          "question_id": "question-company",
+          "value": {
+            "company": "Example Labs",
+            "job_title": null
+          },
+          "question_type": "company"
+        },
+        {
+          "label": "Phone",
+          "question_id": "question-phone",
+          "value": null,
+          "question_type": "phone-number"
+        }
+      ]
+    },
+    "response": {
+      "membership_id": "mem-sam",
+      "status": "pending"
+    }
+  },
+  {
+    "scenario": "add_member_with_explicit_false_skip_payment",
+    "operation": "add_member_to_tier",
+    "model": "AddMemberToTier",
+    "method": "POST",
+    "path": "/v1/memberships/members/add",
+    "request": {
+      "email": "alex@example.com",
+      "membership_tier_id": "tier-community",
+      "skip_payment": false,
+      "registration_answers": []
+    },
+    "response": {
+      "membership_id": "mem-alex",
+      "status": "approved"
+    }
+  },
+  {
+    "scenario": "approve_by_user_id",
+    "operation": "update_member_status",
+    "model": "UpdateMemberStatus",
+    "method": "POST",
+    "path": "/v1/memberships/members/update-status",
+    "request": {
+      "user_id": "usr-sam",
+      "status": "approved"
+    },
+    "response": {}
+  },
+  {
+    "scenario": "decline_by_email",
+    "operation": "update_member_status",
+    "model": "UpdateMemberStatus",
+    "method": "POST",
+    "path": "/v1/memberships/members/update-status",
+    "request": {
+      "user_id": "sam@example.com",
+      "status": "declined"
+    },
+    "response": {}
+  }
+]

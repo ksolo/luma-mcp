@@ -9,10 +9,12 @@ from opentelemetry.instrumentation.asgi import OpenTelemetryMiddleware
 from luma_mcp.telemetry import configure, redact_request_url
 from luma_mcp.tools.calendars import register_calendars
 from luma_mcp.tools.events import register_events
+from luma_mcp.tools.memberships import register_memberships
 
 mcp = MCPServer("Luma")
 register_events(mcp)
 register_calendars(mcp)
+register_memberships(mcp)
 
 
 def create_app():
