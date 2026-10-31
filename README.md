@@ -3,8 +3,9 @@
 An MCP server for integrating agents with the [Luma API](https://docs.luma.com/reference/getting-started-with-your-api)
 to manage meetup events and guests.
 
-The server currently starts, but Luma API tools and caller-supplied credential handling
-are still under development.
+The Events API is implemented, including guests, hosts, ticket types, coupons,
+blasts, and two-step event cancellation. Calendars, memberships, webhooks,
+organizations, and miscellaneous operations will follow in separate PRs.
 
 ## Luma prerequisites
 
@@ -13,8 +14,9 @@ are still under development.
 - Generate an API key from your calendar's [API key settings](https://luma.com/calendar/manage/api-keys).
   Each key is scoped to one calendar; generate a separate key for each calendar you manage.
 
-The intended HTTP integration accepts the caller's key through the `X-Luma-API-Key`
+The HTTP integration accepts the caller's key through the `X-Luma-API-Key`
 header on each request. Keep keys out of source control and tool arguments.
+Keys are used only for the current request. The service has no separate login.
 
 ## Developer setup
 
@@ -34,14 +36,32 @@ The commit hooks fix Ruff lint issues where possible and format staged Python fi
 ## Running locally
 
 ```sh
-just serve-http
+just serve
 ```
 
-This starts the service over Streamable HTTP, the transport intended for caller-supplied
-headers. `just serve` currently starts the stdio transport, which cannot receive HTTP headers.
+This starts Streamable HTTP at `http://127.0.0.1:8000/mcp`.
+`just serve-http` is an alias. Set `HOST` and `PORT` to override the listen address.
 
-`just inspector` launches the MCP Inspector using the current stdio setup and requires
-Node.js and `npx`. HTTP Inspector configuration is still pending.
+In another terminal, run `just inspector` (requires Node.js and `npx`). In the Inspector,
+select Streamable HTTP, enter the URL above, and add `X-Luma-API-Key` as a custom header.
+Tool arguments never include the key.
+
+Read operations retry transient failures up to three attempts within a five-second
+budget. Rate-limit waits honor `Retry-After`; longer waits are returned to the caller.
+Writes are never automatically replayed. Errors include `code`, `status`, `retry_after`,
+and `outcome_unknown` so callers can decide how to proceed.
+
+## Observability
+
+Set `OTEL_EXPORTER_OTLP_ENDPOINT` to your collector's OTLP HTTP base URL, for example
+`http://localhost:4318`, to export traces and metrics. Standard signal-specific
+endpoint and exporter header variables are also supported. Without an endpoint,
+the service does not export telemetry. `OTEL_SERVICE_NAME` defaults to `luma-mcp`.
+
+Traces cover incoming HTTP requests, tool execution, and outgoing Luma operations.
+Metrics track upstream attempt counts, durations, and response statuses, including
+rate limits. Upstream spans omit query parameters and payloads; captured HTTP headers
+are redacted, including the Luma key.
 
 ## Checks
 
@@ -55,16 +75,24 @@ Use `just format` to format Python code and `just hooks` to run pre-commit again
 tracked files. GitHub Actions checks lint, formatting, and tests on pushes and pull requests.
 Run `just` to list all available commands.
 
+Tests use synthetic examples in `tests/fixtures/events.json`, validated against
+Luma's [public OpenAPI specification](https://public-api.luma.com/openapi.json).
+The checked-in Events snapshot is `schemas/events.json`; regenerate Pydantic models
+with `just generate-models`. Tests never contact Luma or require a real API key.
+
 ## Project layout
 
 ```text
 src/luma_mcp/
 ├── __init__.py    # Command entry point
 ├── server.py      # MCP server setup and tool registration
+├── telemetry.py   # OpenTelemetry exporter configuration
 ├── client/        # Luma HTTP client and authentication
 ├── models/        # Pydantic request and response models
 └── tools/         # MCP tool definitions
 tests/            # Mirrors the structure inside src/luma_mcp/
+schemas/          # OpenAPI snapshots
+scripts/          # Model regeneration
 ```
 
 See [AGENTS.md](AGENTS.md) for development conventions.

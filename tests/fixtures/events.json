@@ -1,0 +1,633 @@
+[
+  {
+    "operation": "get_event",
+    "model": "GetEvent",
+    "method": "GET",
+    "path": "/v1/events/get",
+    "request": {
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "platform": "luma",
+      "id": "evt-meetup",
+      "user_id": "usr-alex",
+      "calendar_id": "cal-meetup",
+      "start_at": "2026-11-12T00:00:00Z",
+      "duration_interval": "PT2H",
+      "end_at": "2026-11-12T02:00:00Z",
+      "created_at": "2026-11-01T18:00:00Z",
+      "timezone": "America/Chicago",
+      "name": "Agent Meetup",
+      "geo_address_json": null,
+      "coordinate": null,
+      "meeting_url": null,
+      "location_type": "offline",
+      "location_visibility": "public",
+      "cover_url": "https://images.lumacdn.com/example.png",
+      "url": "https://luma.com/example-meetup",
+      "visibility": "public",
+      "waitlist_status": "disabled",
+      "registration_open": true,
+      "require_approval": false,
+      "max_capacity": null,
+      "can_register_for_multiple_tickets": true,
+      "spots_remaining": null,
+      "display_price": null,
+      "feedback_email": {
+        "enabled": true
+      },
+      "access": "manage",
+      "description": "Build agents together.",
+      "description_md": "Build agents together.",
+      "confirmation_email_md": "",
+      "pending_approval_email_md": "",
+      "declined_email_md": "",
+      "hosts": [
+        {
+          "id": "usr-host",
+          "email": "alex@example.test",
+          "name": "Alex Example",
+          "first_name": "Alex",
+          "last_name": "Example",
+          "avatar_url": "https://example.test/avatar.png"
+        }
+      ],
+      "guest_counts": {
+        "approved": {
+          "guests": 12,
+          "tickets": 12
+        },
+        "pending_approval": {
+          "guests": 0,
+          "tickets": 0
+        },
+        "waitlist": {
+          "guests": 0,
+          "tickets": 0
+        },
+        "invited": {
+          "guests": 0,
+          "tickets": 0
+        },
+        "declined": {
+          "guests": 0,
+          "tickets": 0
+        },
+        "checked_in": {
+          "guests": 0,
+          "tickets": 0
+        }
+      },
+      "tax_config": null
+    }
+  },
+  {
+    "operation": "get_guest",
+    "model": "GetGuest",
+    "method": "GET",
+    "path": "/v1/events/guests/get",
+    "request": {
+      "event_id": "evt-meetup",
+      "id": "gst-alex"
+    },
+    "response": {
+      "id": "gst-alex",
+      "user_id": "usr-alex",
+      "user_email": "alex@example.test",
+      "user_name": "Alex Example",
+      "user_first_name": "Alex",
+      "user_last_name": "Example",
+      "approval_status": "approved",
+      "check_in_qr_code": "https://luma.com/check-in/synthetic",
+      "eth_address": null,
+      "invited_at": null,
+      "joined_at": null,
+      "phone_number": null,
+      "registered_at": "2026-11-01T18:00:00Z",
+      "registration_answers": null,
+      "solana_address": null,
+      "utm_source": null,
+      "attribution_params": null,
+      "event_tickets": [
+        {
+          "id": "ticket-meetup",
+          "amount": 0,
+          "amount_discount": 0,
+          "amount_tax": 0,
+          "currency": null,
+          "checked_in_at": null,
+          "event_ticket_type_id": "ttype-general",
+          "is_captured": true,
+          "name": "General admission"
+        }
+      ],
+      "event_ticket_orders": [
+        {
+          "id": "order-meetup",
+          "amount": 0,
+          "amount_discount": 0,
+          "amount_tax": 0,
+          "currency": null,
+          "coupon_info": null,
+          "is_captured": true,
+          "amount_refunded": 0
+        }
+      ]
+    }
+  },
+  {
+    "operation": "list_guests",
+    "model": "ListGuests",
+    "method": "GET",
+    "path": "/v1/events/guests/list",
+    "request": {
+      "event_id": "evt-meetup",
+      "approval_status": "approved",
+      "pagination_cursor": "cursor-first-page",
+      "pagination_limit": 25,
+      "sort_column": "registered_at",
+      "sort_direction": "desc"
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "gst-alex",
+          "user_id": "usr-alex",
+          "user_email": "alex@example.test",
+          "user_name": "Alex Example",
+          "user_first_name": "Alex",
+          "user_last_name": "Example",
+          "approval_status": "approved",
+          "check_in_qr_code": "https://luma.com/check-in/synthetic",
+          "eth_address": null,
+          "invited_at": null,
+          "joined_at": null,
+          "phone_number": null,
+          "registered_at": "2026-11-01T18:00:00Z",
+          "registration_answers": null,
+          "solana_address": null,
+          "utm_source": null,
+          "attribution_params": null,
+          "event_tickets": [
+            {
+              "id": "ticket-meetup",
+              "amount": 0,
+              "amount_discount": 0,
+              "amount_tax": 0,
+              "currency": null,
+              "checked_in_at": null,
+              "event_ticket_type_id": "ttype-general",
+              "is_captured": true,
+              "name": "General admission"
+            }
+          ]
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "cursor-next-page"
+    }
+  },
+  {
+    "operation": "list_event_coupons",
+    "model": "ListEventCoupons",
+    "method": "GET",
+    "path": "/v1/events/coupons/list",
+    "request": {
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "coupon-meetup",
+          "code": "MEETUP20",
+          "remaining_count": 10,
+          "valid_start_at": null,
+          "valid_end_at": null,
+          "percent_off": null,
+          "cents_off": null,
+          "currency": null
+        }
+      ],
+      "has_more": false
+    }
+  },
+  {
+    "operation": "list_ticket_types",
+    "model": "ListTicketTypes",
+    "method": "GET",
+    "path": "/v1/events/ticket-types/list",
+    "request": {
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "entries": [
+        {
+          "name": "Agent Meetup",
+          "type": "free",
+          "id": "ttype-general"
+        }
+      ]
+    }
+  },
+  {
+    "operation": "get_ticket_type",
+    "model": "GetTicketType",
+    "method": "GET",
+    "path": "/v1/events/ticket-types/get",
+    "request": {
+      "event_ticket_type_id": "ttype-general"
+    },
+    "response": {
+      "name": "Agent Meetup",
+      "type": "free",
+      "id": "ttype-general"
+    }
+  },
+  {
+    "operation": "list_blasts",
+    "model": "ListBlasts",
+    "method": "GET",
+    "path": "/v1/events/blasts/list",
+    "request": {
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "ep-reminder",
+          "event_id": "evt-meetup",
+          "subject": "See you at the meetup",
+          "content_md": "Doors open at 6 pm.",
+          "status": "scheduled",
+          "scheduled_for": "2026-11-01T18:00:00Z",
+          "sent_at": null,
+          "recipient_groups": [
+            {
+              "status": "approved",
+              "event_ticket_type_id": null
+            }
+          ],
+          "recipient_count": 0,
+          "email_open_count": 0,
+          "sender": {
+            "type": "user",
+            "name": "Alex Example"
+          },
+          "can_edit": true,
+          "can_reschedule": true
+        }
+      ]
+    }
+  },
+  {
+    "operation": "get_blast",
+    "model": "GetBlast",
+    "method": "GET",
+    "path": "/v1/events/blasts/get",
+    "request": {
+      "blast_id": "ep-reminder"
+    },
+    "response": {
+      "id": "ep-reminder",
+      "event_id": "evt-meetup",
+      "subject": "See you at the meetup",
+      "content_md": "Doors open at 6 pm.",
+      "status": "scheduled",
+      "scheduled_for": "2026-11-01T18:00:00Z",
+      "sent_at": null,
+      "recipient_groups": [
+        {
+          "status": "approved",
+          "event_ticket_type_id": null
+        }
+      ],
+      "recipient_count": 0,
+      "email_open_count": 0,
+      "sender": {
+        "type": "user",
+        "name": "Alex Example"
+      },
+      "can_edit": true,
+      "can_reschedule": true
+    }
+  },
+  {
+    "operation": "create_event",
+    "model": "CreateEvent",
+    "method": "POST",
+    "path": "/v1/events/create",
+    "request": {
+      "name": "Agent Meetup",
+      "start_at": "2026-11-12T00:00:00Z",
+      "timezone": "America/Chicago",
+      "end_at": "2026-11-12T02:00:00Z",
+      "description_md": "Build agents together.",
+      "geo_address_json": {
+        "type": "manual",
+        "address": "123 Example St, Indianapolis, IN"
+      },
+      "visibility": "public"
+    },
+    "response": {
+      "id": "evt-meetup"
+    }
+  },
+  {
+    "operation": "update_event",
+    "model": "UpdateEvent",
+    "method": "POST",
+    "path": "/v1/events/update",
+    "request": {
+      "event_id": "evt-meetup",
+      "name": "Agent Meetup: Tools",
+      "suppress_email": true,
+      "font": null
+    },
+    "response": {}
+  },
+  {
+    "operation": "update_guest_status",
+    "model": "UpdateGuestStatus",
+    "method": "POST",
+    "path": "/v1/events/guests/update-status",
+    "request": {
+      "event_id": "evt-meetup",
+      "guest_id": "gst-alex",
+      "status": "approved"
+    },
+    "response": {}
+  },
+  {
+    "operation": "update_guest_tickets",
+    "model": "UpdateGuestTickets",
+    "method": "POST",
+    "path": "/v1/events/guests/update-tickets",
+    "request": {
+      "event_id": "evt-meetup",
+      "guest_id": "gst-alex"
+    },
+    "response": {
+      "refunds": [
+        {
+          "event_ticket_order_id": "example",
+          "amount": 1,
+          "currency": "usd"
+        }
+      ]
+    }
+  },
+  {
+    "operation": "send_invites",
+    "model": "SendInvites",
+    "method": "POST",
+    "path": "/v1/events/guests/send-invites",
+    "request": {
+      "event_id": "evt-meetup",
+      "guests": [
+        {
+          "email": "alex@example.test",
+          "name": "Alex Example"
+        }
+      ]
+    },
+    "response": {
+      "skipped": [
+        {
+          "email": "already-invited@example.test"
+        }
+      ]
+    }
+  },
+  {
+    "operation": "add_guests",
+    "model": "AddGuests",
+    "method": "POST",
+    "path": "/v1/events/guests/add",
+    "request": {
+      "event_id": "evt-meetup",
+      "guests": [
+        {
+          "email": "alex@example.test",
+          "name": "Alex Example"
+        }
+      ]
+    },
+    "response": {
+      "skipped": [
+        {
+          "email": "already-invited@example.test"
+        }
+      ]
+    }
+  },
+  {
+    "operation": "add_host",
+    "model": "AddHost",
+    "method": "POST",
+    "path": "/v1/events/hosts/add",
+    "request": {
+      "event_id": "evt-meetup",
+      "email": "alex@example.test"
+    },
+    "response": {}
+  },
+  {
+    "operation": "update_host",
+    "model": "UpdateHost",
+    "method": "POST",
+    "path": "/v1/events/hosts/update",
+    "request": {
+      "event_id": "evt-meetup",
+      "email": "alex@example.test"
+    },
+    "response": {}
+  },
+  {
+    "operation": "remove_host",
+    "model": "RemoveHost",
+    "method": "POST",
+    "path": "/v1/events/hosts/remove",
+    "request": {
+      "event_id": "evt-meetup",
+      "email": "alex@example.test"
+    },
+    "response": {}
+  },
+  {
+    "operation": "create_coupon",
+    "model": "CreateCoupon",
+    "method": "POST",
+    "path": "/v1/events/coupons/create",
+    "request": {
+      "code": "MEETUP20",
+      "discount": {
+        "discount_type": "percent",
+        "percent_off": 20
+      },
+      "event_id": "evt-meetup",
+      "remaining_count": 10
+    },
+    "response": {
+      "id": "coupon-meetup",
+      "code": "MEETUP20",
+      "remaining_count": 10,
+      "valid_start_at": null,
+      "valid_end_at": null,
+      "percent_off": null,
+      "cents_off": null,
+      "currency": null
+    }
+  },
+  {
+    "operation": "update_coupon",
+    "model": "UpdateCoupon",
+    "method": "POST",
+    "path": "/v1/events/coupons/update",
+    "request": {
+      "event_id": "evt-meetup",
+      "code": "MEETUP20"
+    },
+    "response": {}
+  },
+  {
+    "operation": "create_ticket_type",
+    "model": "CreateTicketType",
+    "method": "POST",
+    "path": "/v1/events/ticket-types/create",
+    "request": {
+      "event_id": "evt-meetup",
+      "name": "Agent Meetup",
+      "type": "free"
+    },
+    "response": {
+      "name": "Agent Meetup",
+      "type": "free",
+      "id": "ttype-general"
+    }
+  },
+  {
+    "operation": "update_ticket_type",
+    "model": "UpdateTicketType",
+    "method": "POST",
+    "path": "/v1/events/ticket-types/update",
+    "request": {
+      "event_ticket_type_id": "ttype-general"
+    },
+    "response": {
+      "name": "Agent Meetup",
+      "type": "free",
+      "id": "ttype-general"
+    }
+  },
+  {
+    "operation": "delete_ticket_type",
+    "model": "DeleteTicketType",
+    "method": "POST",
+    "path": "/v1/events/ticket-types/delete",
+    "request": {
+      "event_ticket_type_id": "ttype-general"
+    },
+    "response": {}
+  },
+  {
+    "operation": "create_blast",
+    "model": "CreateBlast",
+    "method": "POST",
+    "path": "/v1/events/blasts/create",
+    "request": {
+      "event_id": "evt-meetup",
+      "content_md": "Doors open at 6 pm."
+    },
+    "response": {
+      "id": "ep-reminder",
+      "event_id": "evt-meetup",
+      "subject": "See you at the meetup",
+      "content_md": "Doors open at 6 pm.",
+      "status": "scheduled",
+      "scheduled_for": "2026-11-01T18:00:00Z",
+      "sent_at": null,
+      "recipient_groups": [
+        {
+          "status": "approved",
+          "event_ticket_type_id": null
+        }
+      ],
+      "recipient_count": 0,
+      "email_open_count": 0,
+      "sender": {
+        "type": "user",
+        "name": "Alex Example"
+      },
+      "can_edit": true,
+      "can_reschedule": true
+    }
+  },
+  {
+    "operation": "update_blast",
+    "model": "UpdateBlast",
+    "method": "POST",
+    "path": "/v1/events/blasts/update",
+    "request": {
+      "blast_id": "ep-reminder"
+    },
+    "response": {
+      "id": "ep-reminder",
+      "event_id": "evt-meetup",
+      "subject": "See you at the meetup",
+      "content_md": "Doors open at 6 pm.",
+      "status": "scheduled",
+      "scheduled_for": "2026-11-01T18:00:00Z",
+      "sent_at": null,
+      "recipient_groups": [
+        {
+          "status": "approved",
+          "event_ticket_type_id": null
+        }
+      ],
+      "recipient_count": 0,
+      "email_open_count": 0,
+      "sender": {
+        "type": "user",
+        "name": "Alex Example"
+      },
+      "can_edit": true,
+      "can_reschedule": true
+    }
+  },
+  {
+    "operation": "delete_blast",
+    "model": "DeleteBlast",
+    "method": "POST",
+    "path": "/v1/events/blasts/delete",
+    "request": {
+      "blast_id": "ep-reminder"
+    },
+    "response": {}
+  },
+  {
+    "operation": "request_event_cancellation",
+    "model": "RequestEventCancellation",
+    "method": "POST",
+    "path": "/v1/events/cancel/request",
+    "request": {
+      "event_id": "evt-meetup"
+    },
+    "response": {
+      "cancellation_token": "synthetic-cancellation-token",
+      "is_paid": false,
+      "guest_count": 12
+    }
+  },
+  {
+    "operation": "cancel_event",
+    "model": "CancelEvent",
+    "method": "POST",
+    "path": "/v1/events/cancel",
+    "request": {
+      "event_id": "evt-meetup",
+      "cancellation_token": "synthetic-cancellation-token",
+      "should_refund": false
+    },
+    "response": {}
+  }
+]
