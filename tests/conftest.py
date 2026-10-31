@@ -21,3 +21,13 @@ CALENDAR_CASES = json.loads(
 @pytest.fixture(params=CALENDAR_CASES, ids=lambda case: case["scenario"])
 def calendar_case(request):
     return request.param
+
+
+MEMBERSHIP_CASES = json.loads(
+    (Path(__file__).parent / "fixtures/memberships.json").read_text()
+)
+
+
+@pytest.fixture(params=MEMBERSHIP_CASES, ids=lambda case: case["scenario"])
+def membership_case(request):
+    return request.param

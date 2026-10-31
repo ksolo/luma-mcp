@@ -13,6 +13,7 @@ from luma_mcp.client.base import LumaClient
 from luma_mcp.client.calendars import CalendarsClient
 from luma_mcp.client.errors import LumaError
 from luma_mcp.client.events import EventsClient
+from luma_mcp.client.memberships import MembershipsClient
 
 tracer = trace.get_tracer(__name__)
 
@@ -30,6 +31,10 @@ def event_client(ctx: Context):
 
 def calendar_client(ctx: Context):
     return luma_client(ctx, CalendarsClient)
+
+
+def membership_client(ctx: Context):
+    return luma_client(ctx, MembershipsClient)
 
 
 @asynccontextmanager
