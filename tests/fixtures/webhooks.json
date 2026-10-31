@@ -1,0 +1,202 @@
+[
+  {
+    "scenario": "list_active_and_paused_hooks",
+    "operation": "list_webhooks",
+    "model": "ListWebhooks",
+    "method": "GET",
+    "path": "/v1/webhooks/list",
+    "request": {
+      "pagination_cursor": "webhooks-page-1",
+      "pagination_limit": 25
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "hook-meetup",
+          "url": "https://example.test/luma-notifications",
+          "event_types": [
+            "event.created",
+            "guest.registered"
+          ],
+          "status": "active",
+          "secret": "synthetic-webhook-signing-secret",
+          "created_at": "2026-11-01T18:00:00Z"
+        },
+        {
+          "id": "hook-paused",
+          "url": "https://example.test/luma-audit",
+          "event_types": [
+            "*"
+          ],
+          "status": "paused",
+          "secret": "synthetic-webhook-signing-secret",
+          "created_at": "2026-11-01T18:00:00Z"
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "webhooks-page-2"
+    }
+  },
+  {
+    "scenario": "list_final_page",
+    "operation": "list_webhooks",
+    "model": "ListWebhooks",
+    "method": "GET",
+    "path": "/v1/webhooks/list",
+    "request": {
+      "pagination_cursor": "webhooks-page-2"
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "get_webhook",
+    "operation": "get_webhook",
+    "model": "GetWebhook",
+    "method": "GET",
+    "path": "/v2/webhooks/get",
+    "request": {
+      "id": "hook-meetup"
+    },
+    "response": {
+      "id": "hook-meetup",
+      "url": "https://example.test/luma-notifications",
+      "event_types": [
+        "event.created",
+        "guest.registered"
+      ],
+      "status": "active",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "create_specific_events",
+    "operation": "create_webhook",
+    "model": "CreateWebhook",
+    "method": "POST",
+    "path": "/v2/webhooks/create",
+    "request": {
+      "url": "https://example.test/luma-notifications",
+      "event_types": [
+        "event.created",
+        "guest.registered"
+      ]
+    },
+    "response": {
+      "id": "hook-meetup",
+      "url": "https://example.test/luma-notifications",
+      "event_types": [
+        "event.created",
+        "guest.registered"
+      ],
+      "status": "active",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "create_wildcard",
+    "operation": "create_webhook",
+    "model": "CreateWebhook",
+    "method": "POST",
+    "path": "/v2/webhooks/create",
+    "request": {
+      "url": "https://example.test/luma-audit",
+      "event_types": [
+        "*"
+      ]
+    },
+    "response": {
+      "id": "hook-paused",
+      "url": "https://example.test/luma-audit",
+      "event_types": [
+        "*"
+      ],
+      "status": "active",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "pause_webhook",
+    "operation": "update_webhook",
+    "model": "UpdateWebhook",
+    "method": "POST",
+    "path": "/v2/webhooks/update",
+    "request": {
+      "id": "hook-meetup",
+      "status": "paused"
+    },
+    "response": {
+      "id": "hook-meetup",
+      "url": "https://example.test/luma-notifications",
+      "event_types": [
+        "event.created",
+        "guest.registered"
+      ],
+      "status": "paused",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "resume_webhook",
+    "operation": "update_webhook",
+    "model": "UpdateWebhook",
+    "method": "POST",
+    "path": "/v2/webhooks/update",
+    "request": {
+      "id": "hook-paused",
+      "status": "active"
+    },
+    "response": {
+      "id": "hook-paused",
+      "url": "https://example.test/luma-audit",
+      "event_types": [
+        "*"
+      ],
+      "status": "active",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "update_event_types_only",
+    "operation": "update_webhook",
+    "model": "UpdateWebhook",
+    "method": "POST",
+    "path": "/v2/webhooks/update",
+    "request": {
+      "id": "hook-meetup",
+      "event_types": [
+        "guest.refunded",
+        "calendar.person.unsubscribed"
+      ]
+    },
+    "response": {
+      "id": "hook-meetup",
+      "url": "https://example.test/luma-notifications",
+      "event_types": [
+        "guest.refunded",
+        "calendar.person.unsubscribed"
+      ],
+      "status": "active",
+      "secret": "synthetic-webhook-signing-secret",
+      "created_at": "2026-11-01T18:00:00Z"
+    }
+  },
+  {
+    "scenario": "delete_webhook",
+    "operation": "delete_webhook",
+    "model": "DeleteWebhook",
+    "method": "POST",
+    "path": "/v1/webhooks/delete",
+    "request": {
+      "id": "hook-paused"
+    },
+    "response": {}
+  }
+]

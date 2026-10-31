@@ -14,6 +14,7 @@ from luma_mcp.client.calendars import CalendarsClient
 from luma_mcp.client.errors import LumaError
 from luma_mcp.client.events import EventsClient
 from luma_mcp.client.memberships import MembershipsClient
+from luma_mcp.client.webhooks import WebhooksClient
 
 tracer = trace.get_tracer(__name__)
 
@@ -35,6 +36,10 @@ def calendar_client(ctx: Context):
 
 def membership_client(ctx: Context):
     return luma_client(ctx, MembershipsClient)
+
+
+def webhook_client(ctx: Context):
+    return luma_client(ctx, WebhooksClient)
 
 
 @asynccontextmanager

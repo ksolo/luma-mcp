@@ -3,10 +3,10 @@
 An MCP server for integrating agents with the [Luma API](https://docs.luma.com/reference/getting-started-with-your-api)
 to manage meetup events and guests.
 
-The Events, Calendars, and Memberships APIs are implemented, including guests,
-hosts, tickets, blasts, calendar settings, event submissions, contacts, admins,
-tags, and coupons. Webhooks, organizations, and miscellaneous operations will
-follow in separate PRs.
+The Events, Calendars, Memberships, and Webhooks APIs are implemented, including
+guests, hosts, tickets, blasts, calendar settings, event submissions, contacts,
+admins, tags, and coupons. Organizations and miscellaneous operations will follow
+in separate PRs.
 
 Calendar coupon tools are named `create_calendar_coupon` and `update_calendar_coupon`
 to distinguish them from the event coupon tools. `list_events` lists events on the
@@ -16,6 +16,11 @@ Membership tools list tiers, add members, and approve or decline memberships.
 For paid tiers, callers must explicitly set `skip_payment: true` when payment is
 handled externally. Approving a paid member captures payment; declining cancels
 an active subscription. These writes are never retried automatically.
+
+Webhook tools create, get, list, update, and delete subscriptions. Updates can pause
+or resume delivery and change subscribed event types, including `*` for all types.
+Responses preserve Luma's signing secret; telemetry excludes it. This server manages
+subscriptions; notification delivery goes to the URL supplied by the caller.
 
 ## Luma prerequisites
 
@@ -88,11 +93,13 @@ Run `just` to list all available commands.
 Tests use synthetic examples in `tests/fixtures/`, validated against
 Luma's [public OpenAPI specification](https://public-api.luma.com/openapi.json).
 The checked-in snapshots live in `schemas/`. Regenerate a domain's Pydantic models
-with `just generate-models events`, `just generate-models calendars`, or
-`just generate-models memberships`. Calendar fixtures cover repeated query
-parameters, mixed event types, pagination, and partial updates. Membership fixtures
+with `just generate-models events`, `just generate-models calendars`,
+`just generate-models memberships`, or `just generate-models webhooks`.
+Calendar fixtures cover repeated query parameters, mixed event types, pagination,
+and partial updates. Membership fixtures
 cover free, paid, recurring, and hidden tiers, registration answers, and payment
-flags. Tests never contact Luma or require a real API key.
+flags. Webhook fixtures cover mixed v1/v2 routes, wildcard subscriptions, pause/resume,
+and signing-secret responses. Tests never contact Luma or require a real API key.
 
 ## Project layout
 
