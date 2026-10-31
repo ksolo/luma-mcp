@@ -1,15 +1,22 @@
 [project]
 name = "luma-mcp"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP server for integrating agents with the Luma event API"
 readme = "README.md"
 authors = [
     { name = "Kevin Solorio", email = "103829+ksolo@users.noreply.github.com" }
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "httpx>=0.28.1",
     "mcp[cli]>=2.3.0",
+    "opentelemetry-api>=1.45.2",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.2",
+    "opentelemetry-instrumentation-asgi>=0.66b2",
+    "opentelemetry-sdk>=1.45.2",
+    "pydantic>=2.14",
     "python-dotenv>=1.2.4",
+    "uvicorn>=0.54.0",
 ]
 
 [project.scripts]
@@ -21,6 +28,8 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "datamodel-code-generator>=0.87.0",
+    "jsonschema>=4.26.0",
     "pre-commit>=4.7.0",
     "pytest>=9.2.0",
     "ruff>=0.17.3",
@@ -33,4 +42,5 @@ target-version = "py313"
 select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
 testpaths = ["tests"]

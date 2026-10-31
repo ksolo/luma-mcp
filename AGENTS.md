@@ -12,6 +12,8 @@ API documentation: https://docs.luma.com/reference/getting-started-with-your-api
 - `src/luma_mcp/tools/`: MCP tool definitions, delegating to the client.
 - `tests/`: pytest tests mirroring the structure inside `src/luma_mcp/`
   (for example, `tests/client/` and `tests/test_server.py`).
+- `schemas/`: versioned Luma OpenAPI snapshots used to generate models.
+- `scripts/`: maintainer tools, including model regeneration.
 
 Keep MCP concerns out of the client and HTTP concerns out of tools and models.
 
@@ -32,6 +34,18 @@ Keep MCP concerns out of the client and HTTP concerns out of tools and models.
 
 # Credentials
 
-Credential delivery for a shared service is still an open design decision. Do not
-assume a single global key or require API keys as MCP tool arguments without
-discussing that design first. Never commit or log API keys.
+The HTTP service accepts the caller's Luma key in `X-Luma-API-Key` on every tool
+request. Keep credentials request-scoped; never store them globally, fall back to
+an environment key, or expose them as tool arguments. Never commit or log API keys.
+The MCP endpoint has no service authentication initially; that can be added at
+the HTTP boundary later.
+
+# API behavior and observability
+
+- Keep retries in the shared client, bounded by attempt count and elapsed time.
+- Retry safe reads only. Respect `Retry-After`; do not replay ambiguous writes.
+- Base mocked requests and responses on the checked-in OpenAPI schemas, with
+  synthetic data and separate scenarios for pagination and failure behavior.
+- Generate models with `just generate-models`; do not hand-edit generated files.
+- Export OpenTelemetry traces and metrics through configured OTLP endpoints.
+  Exclude keys, guest data, payloads, and query parameters from telemetry.

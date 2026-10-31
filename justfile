@@ -32,8 +32,17 @@ hooks:
 
 # Launch the MCP Inspector against the package server.
 inspector:
-    uv run mcp dev src/luma_mcp/server.py
+    npx @modelcontextprotocol/inspector
 
 # Launch the service over Streamable HTTP.
-serve-http:
-    uv run mcp run src/luma_mcp/server.py:mcp --transport streamable-http
+serve:
+    uv run luma-mcp
+
+# Launch the service over Streamable HTTP.
+serve-http: serve
+
+# Regenerate Pydantic models from a checked-in schema snapshot.
+generate-models domain="events":
+    uv run python scripts/generate_models.py {{domain}}
+    uv run ruff check --fix src/luma_mcp/models/{{domain}}.py
+    uv run ruff format src/luma_mcp/models/{{domain}}.py
