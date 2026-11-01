@@ -1,0 +1,644 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Luma API",
+    "version": "1.0.0",
+    "description": "API for interacting with Luma's event platform.\n\n## Rate Limits\n\nThe Luma API uses a per-minute rate limit shared across `GET` and `POST` requests:\n\n- **Calendar API keys** and OAuth tokens: **200 requests/minute** per calendar.\n- **Organization API keys**: **500 requests/minute** per organization.\n\nWhen you exceed the limit the API returns `429 Too Many Requests`. Back off before retrying.",
+    "contact": {
+      "name": "Luma Support",
+      "url": "https://help.luma.com"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "x-source": "https://public-api.luma.com/openapi.json",
+  "x-retrieved": "2026-11-01",
+  "paths": {
+    "/v1/users/get-self": {
+      "get": {
+        "tags": [
+          "Miscellaneous"
+        ],
+        "summary": "Get Self",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/entities/lookup": {
+      "get": {
+        "tags": [
+          "Miscellaneous"
+        ],
+        "summary": "Lookup Entity",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Look up an event or calendar by its slug, Luma URL, or permanent public path such as `event/evt-...`, `e/evt-...`, or `calendar/cal-...`. URL query parameters and fragments are ignored.",
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/Entity"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "entity"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/places/search": {
+      "get": {
+        "tags": [
+          "Miscellaneous"
+        ],
+        "summary": "Search Places",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Address or place name, e.g. \"120 W 41st St, New York\"."
+            },
+            "description": "Address or place name, e.g. \"120 W 41st St, New York\"."
+          }
+        ],
+        "description": "Search Google Maps for a place and get up to 5 candidates. Pass the chosen `place_id` as `geo_address_json: { type: \"google\", place_id }` when creating or updating an event.",
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PlaceSearchResult"
+                      }
+                    }
+                  },
+                  "required": [
+                    "entries"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/images/search": {
+      "get": {
+        "tags": [
+          "Miscellaneous"
+        ],
+        "summary": "Search Cover Images",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Keywords to match against image descriptions and tags, e.g. \"dinner party\"."
+            },
+            "description": "Keywords to match against image descriptions and tags, e.g. \"dinner party\"."
+          },
+          {
+            "name": "pagination_cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Value of `next_cursor` from a previous request.",
+              "type": "string"
+            },
+            "description": "Value of `next_cursor` from a previous request."
+          },
+          {
+            "name": "pagination_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "The number of items to return. The server will enforce a maximum number.",
+              "type": "number"
+            },
+            "description": "The number of items to return. The server will enforce a maximum number."
+          }
+        ],
+        "description": "Search Luma\u2019s gallery of stock event cover images by keyword. Pass the chosen `image_url` as `cover_url` when creating or updating an event \u2014 gallery images don\u2019t need to be uploaded first.",
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CoverImage"
+                      }
+                    },
+                    "has_more": {
+                      "type": "boolean"
+                    },
+                    "next_cursor": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "entries",
+                    "has_more"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/images/create-upload-url": {
+      "post": {
+        "tags": [
+          "Miscellaneous"
+        ],
+        "summary": "Create Upload URL",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "content_type": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "image/jpeg",
+                          "image/png"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "type": "object",
+                  "properties": {
+                    "upload_url": {
+                      "type": "string",
+                      "description": "You'll upload your image here using a PUT request."
+                    },
+                    "file_url": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "upload_url",
+                    "file_url"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GetSelfRequest": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "GetSelfResponse": {
+        "$ref": "#/components/schemas/User"
+      },
+      "LookupEntityRequest": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug"
+        ]
+      },
+      "LookupEntityResponse": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "entity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Entity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "entity"
+        ]
+      },
+      "SearchPlacesRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Address or place name, e.g. \"120 W 41st St, New York\"."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "SearchPlacesResponse": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlaceSearchResult"
+            }
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      },
+      "SearchCoverImagesRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Keywords to match against image descriptions and tags, e.g. \"dinner party\"."
+          },
+          "pagination_cursor": {
+            "description": "Value of `next_cursor` from a previous request.",
+            "type": "string"
+          },
+          "pagination_limit": {
+            "description": "The number of items to return. The server will enforce a maximum number.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "SearchCoverImagesResponse": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoverImage"
+            }
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "entries",
+          "has_more"
+        ]
+      },
+      "CreateUploadUrlRequest": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "content_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "image/jpeg",
+                  "image/png"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "CreateUploadUrlResponse": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "upload_url": {
+            "type": "string",
+            "description": "You'll upload your image here using a PUT request."
+          },
+          "file_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_url",
+          "file_url"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "avatar_url": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "avatar_url",
+          "email",
+          "first_name",
+          "last_name"
+        ]
+      },
+      "Entity": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "calendar"
+              },
+              "calendar": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "avatar_url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "slug"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "calendar"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "event"
+              },
+              "event": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "cover_url": {
+                    "type": "string"
+                  },
+                  "start_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO 8601 Datetime. For example, 2022-10-19T03:27:13.673Z"
+                  },
+                  "end_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "ISO 8601 Datetime. For example, 2022-10-19T03:27:13.673Z"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "slug",
+                  "cover_url",
+                  "start_at",
+                  "end_at"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "event"
+            ]
+          }
+        ]
+      },
+      "PlaceSearchResult": {
+        "type": "object",
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "description": "Google Maps Place ID."
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "full_address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "coordinate": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "longitude": {
+                    "type": "number"
+                  },
+                  "latitude": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "longitude",
+                  "latitude"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "place_id",
+          "name",
+          "full_address",
+          "coordinate"
+        ]
+      },
+      "CoverImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Pass this as `cover_url` when creating or updating an event."
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "colors": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dominant colors of the image as hex strings."
+          }
+        },
+        "required": [
+          "id",
+          "image_url",
+          "description",
+          "tags",
+          "colors"
+        ]
+      }
+    }
+  }
+}

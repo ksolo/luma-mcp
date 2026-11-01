@@ -14,6 +14,7 @@ from luma_mcp.client.calendars import CalendarsClient
 from luma_mcp.client.errors import LumaError
 from luma_mcp.client.events import EventsClient
 from luma_mcp.client.memberships import MembershipsClient
+from luma_mcp.client.miscellaneous import MiscellaneousClient
 from luma_mcp.client.organizations import OrganizationsClient
 from luma_mcp.client.webhooks import WebhooksClient
 
@@ -45,6 +46,10 @@ def webhook_client(ctx: Context):
 
 def organization_client(ctx: Context):
     return luma_client(ctx, OrganizationsClient)
+
+
+def miscellaneous_client(ctx: Context):
+    return luma_client(ctx, MiscellaneousClient)
 
 
 @asynccontextmanager
