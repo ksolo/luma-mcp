@@ -1,0 +1,386 @@
+[
+  {
+    "scenario": "list_organization_admins_with_legacy_id",
+    "operation": "list_organization_admins",
+    "model": "ListOrganizationAdmins",
+    "method": "GET",
+    "path": "/v1/organizations/admins/list",
+    "request": {},
+    "response": {
+      "entries": [
+        {
+          "id": "usr-alex",
+          "name": "Alex Example",
+          "avatar_url": "https://example.test/alex.png",
+          "email": "alex@example.test",
+          "first_name": "Alex",
+          "last_name": "Example",
+          "api_id": "usr-alex"
+        }
+      ]
+    }
+  },
+  {
+    "scenario": "list_organization_calendars",
+    "operation": "list_organization_calendars",
+    "model": "ListOrganizationCalendars",
+    "method": "GET",
+    "path": "/v1/organizations/calendars/list",
+    "request": {
+      "pagination_cursor": "calendars-page-1",
+      "pagination_limit": 25
+    },
+    "response": {
+      "entries": [
+        {
+          "id": "cal-meetup",
+          "launch_status": "launched",
+          "tint_color": "#336699",
+          "name": "Agent Meetup",
+          "slug": "agent-meetup",
+          "avatar_url": "https://images.lumacdn.com/calendar.png",
+          "url": "https://luma.com/agent-meetup",
+          "description": "A community for building agents.",
+          "social_image_url": null,
+          "cover_image_url": null,
+          "is_personal": false,
+          "location": {
+            "city": "Indianapolis",
+            "region": "Indiana",
+            "country": "United States",
+            "country_code": "US",
+            "timezone": "America/Indiana/Indianapolis"
+          },
+          "coordinate": {
+            "latitude": 39.7684,
+            "longitude": -86.1581
+          },
+          "instagram_handle": null,
+          "twitter_handle": "agentmeetup",
+          "youtube_handle": null,
+          "tiktok_handle": null,
+          "linkedin_handle": null,
+          "website": "https://example.test/meetup"
+        },
+        {
+          "id": "cal-labs",
+          "launch_status": "launched",
+          "tint_color": "#336699",
+          "name": "Community Labs",
+          "slug": "community-labs",
+          "avatar_url": "https://images.lumacdn.com/calendar.png",
+          "url": "https://luma.com/community-labs",
+          "description": "A community for building agents.",
+          "social_image_url": null,
+          "cover_image_url": null,
+          "is_personal": false,
+          "location": {
+            "city": "Indianapolis",
+            "region": "Indiana",
+            "country": "United States",
+            "country_code": "US",
+            "timezone": "America/Indiana/Indianapolis"
+          },
+          "coordinate": {
+            "latitude": 39.7684,
+            "longitude": -86.1581
+          },
+          "instagram_handle": null,
+          "twitter_handle": "agentmeetup",
+          "youtube_handle": null,
+          "tiktok_handle": null,
+          "linkedin_handle": null,
+          "website": "https://example.test/meetup"
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "calendars-page-2"
+    }
+  },
+  {
+    "scenario": "list_calendars_final_page",
+    "operation": "list_organization_calendars",
+    "model": "ListOrganizationCalendars",
+    "method": "GET",
+    "path": "/v1/organizations/calendars/list",
+    "request": {
+      "pagination_cursor": "calendars-page-2"
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "list_events_with_calendar_associations",
+    "operation": "list_organization_events",
+    "model": "ListOrganizationEvents",
+    "method": "GET",
+    "path": "/v1/organizations/events/list",
+    "request": {
+      "before": "2026-12-01T00:00:00Z",
+      "after": "2026-11-01T00:00:00Z",
+      "pagination_cursor": "events-page-1",
+      "pagination_limit": 25,
+      "sort_direction": "asc"
+    },
+    "response": {
+      "entries": [
+        {
+          "platform": "luma",
+          "id": "evt-meetup",
+          "user_id": "usr-alex",
+          "calendar_id": "cal-meetup",
+          "start_at": "2026-11-12T00:00:00Z",
+          "duration_interval": "PT2H",
+          "end_at": "2026-11-12T02:00:00Z",
+          "created_at": "2026-11-01T18:00:00Z",
+          "timezone": "America/Chicago",
+          "name": "Agent Meetup",
+          "geo_address_json": null,
+          "coordinate": null,
+          "meeting_url": "https://meet.google.com/synthetic-meetup",
+          "location_type": "meet",
+          "location_visibility": "public",
+          "cover_url": "https://images.lumacdn.com/example.png",
+          "url": "https://luma.com/example-meetup",
+          "visibility": "public",
+          "waitlist_status": "disabled",
+          "registration_open": true,
+          "require_approval": false,
+          "max_capacity": null,
+          "can_register_for_multiple_tickets": true,
+          "spots_remaining": null,
+          "display_price": null,
+          "feedback_email": {
+            "enabled": true
+          },
+          "api_id": "evt-meetup",
+          "user_api_id": "usr-alex",
+          "calendar_api_id": "cal-meetup",
+          "zoom_meeting_url": "https://meet.google.com/synthetic-meetup",
+          "geo_latitude": null,
+          "geo_longitude": null,
+          "managing_calendars": [
+            {
+              "id": "cal-meetup",
+              "launch_status": "launched",
+              "tint_color": "#336699",
+              "name": "Agent Meetup",
+              "slug": "agent-meetup",
+              "avatar_url": "https://images.lumacdn.com/calendar.png",
+              "url": "https://luma.com/agent-meetup",
+              "description": "A community for building agents.",
+              "social_image_url": null,
+              "cover_image_url": null,
+              "is_personal": false,
+              "location": {
+                "city": "Indianapolis",
+                "region": "Indiana",
+                "country": "United States",
+                "country_code": "US",
+                "timezone": "America/Indiana/Indianapolis"
+              },
+              "coordinate": {
+                "latitude": 39.7684,
+                "longitude": -86.1581
+              },
+              "instagram_handle": null,
+              "twitter_handle": "agentmeetup",
+              "youtube_handle": null,
+              "tiktok_handle": null,
+              "linkedin_handle": null,
+              "website": "https://example.test/meetup",
+              "status": "approved"
+            },
+            {
+              "id": "cal-labs",
+              "launch_status": "launched",
+              "tint_color": "#336699",
+              "name": "Community Labs",
+              "slug": "community-labs",
+              "avatar_url": "https://images.lumacdn.com/calendar.png",
+              "url": "https://luma.com/community-labs",
+              "description": "A community for building agents.",
+              "social_image_url": null,
+              "cover_image_url": null,
+              "is_personal": false,
+              "location": {
+                "city": "Indianapolis",
+                "region": "Indiana",
+                "country": "United States",
+                "country_code": "US",
+                "timezone": "America/Indiana/Indianapolis"
+              },
+              "coordinate": {
+                "latitude": 39.7684,
+                "longitude": -86.1581
+              },
+              "instagram_handle": null,
+              "twitter_handle": "agentmeetup",
+              "youtube_handle": null,
+              "tiktok_handle": null,
+              "linkedin_handle": null,
+              "website": "https://example.test/meetup",
+              "status": "approved"
+            }
+          ]
+        }
+      ],
+      "has_more": true,
+      "next_cursor": "events-page-2"
+    }
+  },
+  {
+    "scenario": "list_events_final_page",
+    "operation": "list_organization_events",
+    "model": "ListOrganizationEvents",
+    "method": "GET",
+    "path": "/v1/organizations/events/list",
+    "request": {
+      "pagination_cursor": "events-page-2"
+    },
+    "response": {
+      "entries": [],
+      "has_more": false
+    }
+  },
+  {
+    "scenario": "create_calendar_with_defaults",
+    "operation": "create_calendar",
+    "model": "CreateCalendar",
+    "method": "POST",
+    "path": "/v2/organizations/calendars/create",
+    "request": {
+      "name": "New Community"
+    },
+    "response": {
+      "id": "cal-new",
+      "launch_status": "launched",
+      "tint_color": "#336699",
+      "name": "New Community",
+      "slug": "new-community",
+      "avatar_url": "https://images.lumacdn.com/calendar.png",
+      "url": "https://luma.com/new-community",
+      "description": "A community for building agents.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": null,
+      "coordinate": null,
+      "instagram_handle": null,
+      "twitter_handle": "agentmeetup",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": "https://example.test/meetup"
+    }
+  },
+  {
+    "scenario": "create_calendar_with_lookup_location",
+    "operation": "create_calendar",
+    "model": "CreateCalendar",
+    "method": "POST",
+    "path": "/v2/organizations/calendars/create",
+    "request": {
+      "name": "Community Labs",
+      "slug": "community-labs",
+      "description": "Hands-on community sessions.",
+      "location": {
+        "type": "lookup",
+        "query": "Indianapolis, IN"
+      },
+      "launch_status": "coming-soon",
+      "avatar_url": "https://images.lumacdn.com/labs.png",
+      "tint_color": "#336699",
+      "website": null,
+      "twitter_handle": ""
+    },
+    "response": {
+      "id": "cal-labs",
+      "launch_status": "coming-soon",
+      "tint_color": "#336699",
+      "name": "Community Labs",
+      "slug": "community-labs",
+      "avatar_url": "https://images.lumacdn.com/labs.png",
+      "url": "https://luma.com/community-labs",
+      "description": "Hands-on community sessions.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": {
+        "city": "Indianapolis",
+        "region": "Indiana",
+        "country": "United States",
+        "country_code": "US",
+        "timezone": "America/Indiana/Indianapolis"
+      },
+      "coordinate": {
+        "latitude": 39.7684,
+        "longitude": -86.1581
+      },
+      "instagram_handle": null,
+      "twitter_handle": "",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": null
+    }
+  },
+  {
+    "scenario": "create_calendar_with_google_place",
+    "operation": "create_calendar",
+    "model": "CreateCalendar",
+    "method": "POST",
+    "path": "/v2/organizations/calendars/create",
+    "request": {
+      "name": "Community Labs",
+      "location": {
+        "type": "google",
+        "place_id": "synthetic-place-id"
+      }
+    },
+    "response": {
+      "id": "cal-labs",
+      "launch_status": "launched",
+      "tint_color": "#336699",
+      "name": "Community Labs",
+      "slug": "community-labs",
+      "avatar_url": "https://images.lumacdn.com/calendar.png",
+      "url": "https://luma.com/community-labs",
+      "description": "A community for building agents.",
+      "social_image_url": null,
+      "cover_image_url": null,
+      "is_personal": false,
+      "location": {
+        "city": "Indianapolis",
+        "region": "Indiana",
+        "country": "United States",
+        "country_code": "US",
+        "timezone": "America/Indiana/Indianapolis"
+      },
+      "coordinate": {
+        "latitude": 39.7684,
+        "longitude": -86.1581
+      },
+      "instagram_handle": null,
+      "twitter_handle": "agentmeetup",
+      "youtube_handle": null,
+      "tiktok_handle": null,
+      "linkedin_handle": null,
+      "website": "https://example.test/meetup"
+    }
+  },
+  {
+    "scenario": "transfer_event_to_organization_calendar",
+    "operation": "transfer_event_calendar",
+    "model": "TransferEventCalendar",
+    "method": "POST",
+    "path": "/v1/organizations/events/transfer-calendar",
+    "request": {
+      "event_id": "evt-meetup",
+      "calendar_id": "cal-labs"
+    },
+    "response": {}
+  }
+]
