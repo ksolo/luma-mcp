@@ -3,10 +3,8 @@
 An MCP server for integrating agents with the [Luma API](https://docs.luma.com/reference/getting-started-with-your-api)
 to manage meetup events and guests.
 
-The Events, Calendars, Memberships, and Webhooks APIs are implemented, including
-guests, hosts, tickets, blasts, calendar settings, event submissions, contacts,
-admins, tags, and coupons. Organizations and miscellaneous operations will follow
-in separate PRs.
+The Events, Calendars, Memberships, Webhooks, and Organizations APIs are
+implemented. Miscellaneous operations will follow in a separate PR.
 
 Calendar coupon tools are named `create_calendar_coupon` and `update_calendar_coupon`
 to distinguish them from the event coupon tools. `list_events` lists events on the
@@ -22,12 +20,20 @@ or resume delivery and change subscribed event types, including `*` for all type
 Responses preserve Luma's signing secret; telemetry excludes it. This server manages
 subscriptions; notification delivery goes to the URL supplied by the caller.
 
+Organization tools list admins, calendars, and events, create calendars, and
+transfer events between calendars in the organization. Calendar creation uses v2;
+the other organization operations use v1. Luma enforces organization access and
+calendar ownership using the caller's key.
+
 ## Luma prerequisites
 
 - A **Luma Plus** subscription is required for API access, according to the
   [Luma API documentation](https://docs.luma.com/reference/getting-started-with-your-api).
 - Generate an API key from your calendar's [API key settings](https://luma.com/calendar/manage/api-keys).
   Each key is scoped to one calendar; generate a separate key for each calendar you manage.
+- For organization operations, obtain a key from the organization's **Settings → Developer**
+  page. Organization keys grant access across its calendars, as described in
+  [Luma's API guide](https://help.luma.com/p/luma-api).
 
 The HTTP integration accepts the caller's key through the `X-Luma-API-Key`
 header on each request. Keep keys out of source control and tool arguments.
@@ -94,12 +100,15 @@ Tests use synthetic examples in `tests/fixtures/`, validated against
 Luma's [public OpenAPI specification](https://public-api.luma.com/openapi.json).
 The checked-in snapshots live in `schemas/`. Regenerate a domain's Pydantic models
 with `just generate-models events`, `just generate-models calendars`,
-`just generate-models memberships`, or `just generate-models webhooks`.
+`just generate-models memberships`, `just generate-models webhooks`, or
+`just generate-models organizations`.
 Calendar fixtures cover repeated query parameters, mixed event types, pagination,
 and partial updates. Membership fixtures
 cover free, paid, recurring, and hidden tiers, registration answers, and payment
 flags. Webhook fixtures cover mixed v1/v2 routes, wildcard subscriptions, pause/resume,
-and signing-secret responses. Tests never contact Luma or require a real API key.
+and signing-secret responses. Organization fixtures cover calendar creation,
+pagination, legacy response fields, and transfers. Tests never contact Luma or
+require a real API key.
 
 ## Project layout
 
