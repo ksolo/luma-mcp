@@ -3,8 +3,8 @@
 An MCP server for integrating agents with the [Luma API](https://docs.luma.com/reference/getting-started-with-your-api)
 to manage meetup events and guests.
 
-The Events, Calendars, Memberships, Webhooks, and Organizations APIs are
-implemented. Miscellaneous operations will follow in a separate PR.
+The server wraps the Events, Calendars, Memberships, Webhooks, Organizations,
+and Miscellaneous sections of the Luma API.
 
 Calendar coupon tools are named `create_calendar_coupon` and `update_calendar_coupon`
 to distinguish them from the event coupon tools. `list_events` lists events on the
@@ -24,6 +24,12 @@ Organization tools list admins, calendars, and events, create calendars, and
 transfer events between calendars in the organization. Calendar creation uses v2;
 the other organization operations use v1. Luma enforces organization access and
 calendar ownership using the caller's key.
+
+Miscellaneous tools identify the current user, resolve event and calendar links,
+search places and cover images, and request image upload URLs. Gallery images can
+be used directly as event covers. Custom images require a separate PUT to the
+returned `upload_url`; this service only obtains the URL and does not upload files.
+Presigned URL credentials are excluded from telemetry.
 
 ## Luma prerequisites
 
@@ -99,16 +105,16 @@ Run `just` to list all available commands.
 Tests use synthetic examples in `tests/fixtures/`, validated against
 Luma's [public OpenAPI specification](https://public-api.luma.com/openapi.json).
 The checked-in snapshots live in `schemas/`. Regenerate a domain's Pydantic models
-with `just generate-models events`, `just generate-models calendars`,
-`just generate-models memberships`, `just generate-models webhooks`, or
-`just generate-models organizations`.
+with `just generate-models miscellaneous`, replacing `miscellaneous` with `events`,
+`calendars`, `memberships`, `webhooks`, or `organizations` as needed.
 Calendar fixtures cover repeated query parameters, mixed event types, pagination,
 and partial updates. Membership fixtures
 cover free, paid, recurring, and hidden tiers, registration answers, and payment
 flags. Webhook fixtures cover mixed v1/v2 routes, wildcard subscriptions, pause/resume,
 and signing-secret responses. Organization fixtures cover calendar creation,
 pagination, legacy response fields, and transfers. Tests never contact Luma or
-require a real API key.
+require a real API key. Miscellaneous fixtures cover entity variants, empty search
+results, image pagination, and optional upload content types.
 
 ## Project layout
 

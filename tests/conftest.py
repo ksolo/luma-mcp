@@ -51,3 +51,13 @@ ORGANIZATION_CASES = json.loads(
 @pytest.fixture(params=ORGANIZATION_CASES, ids=lambda case: case["scenario"])
 def organization_case(request):
     return request.param
+
+
+MISCELLANEOUS_CASES = json.loads(
+    (Path(__file__).parent / "fixtures/miscellaneous.json").read_text()
+)
+
+
+@pytest.fixture(params=MISCELLANEOUS_CASES, ids=lambda case: case["scenario"])
+def miscellaneous_case(request):
+    return request.param
